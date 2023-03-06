@@ -1,11 +1,14 @@
-import React from 'react'
-import Card from './Card'
+import React from "react";
+import Card from "./Card";
+import Carousel from "./Carousel";
 
 export default function Body() {
-  return (
-    <div className='container mt-5'>
-        <Card />
-    </div>
-    
-  )
+    return (
+        <div>
+            <Carousel />
+            <div>
+                <Card />
+            </div>
+        </div>
+    );
 }
