@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Carousel() {
+export default function Carousel(props) {
     return (
         <div
             id="carouselExampleFade"
@@ -8,15 +8,18 @@ export default function Carousel() {
             data-bs-ride="carousel"
         >
             <div className="carousel-inner" id="carousel">
-                <div class="carousel-caption" style={{ zIndex: "10" }}>
-                    <form class="d-flex">
+                <div className="carousel-caption" style={{ zIndex: "10" }}>
+                    <form className="d-flex">
                         <input
-                            class="form-control me-2"
+                            className="form-control me-2"
                             type="search"
                             placeholder="Search"
                             aria-label="Search"
+                            onChange={(e) => {
+                                props.onSearchUpdate(e.target.value);
+                            }}
                         />
-                        <button class="btn btn-primary" type="submit">
+                        <button className="btn btn-primary" type="submit">
                             Search
                         </button>
                     </form>
