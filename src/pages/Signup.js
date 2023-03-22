@@ -1,35 +1,31 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-export default function Login() {
-    const navigate = useNavigate();
-
+export default function Signup() {
     const [creds, setCreds] = useState({
+        name: "",
         email: "",
         password: "",
+        location: "",
     });
 
     const submitHandler = async (event) => {
         event.preventDefault();
 
-        const response = await fetch("http://localhost:3001/api/login", {
+        const response = await fetch("http://localhost:3001/api/createuser", {
             method: "POST",
             headers: { "Content-type": "application/json" },
             body: JSON.stringify({
+                name: creds.name,
                 email: creds.email,
                 password: creds.password,
+                location: creds.location,
             }),
         });
 
         const data = await response.json();
 
-        if(response.ok) {
-          localStorage.setItem("authToken",data.authToken);
-          navigate('/');
-        }
-        else  {
-          alert(data.errors);
-        }
+        console.log(data);
     };
 
     const changeHandler = (event) => {
@@ -41,6 +37,18 @@ export default function Login() {
     return (
         <div className="container">
             <form onSubmit={submitHandler}>
+                <div className="mb-3">
+                    <label htmlFor="name" className="form-label">
+                        Name
+                    </label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        name="name"
+                        value={creds.name}
+                        onChange={changeHandler}
+                    />
+                </div>
                 <div className="mb-3">
                     <label htmlFor="exampleInputEmail1" className="form-label">
                         Email address
@@ -74,11 +82,24 @@ export default function Login() {
                         onChange={changeHandler}
                     />
                 </div>
+                <div className="mb-3">
+                    <label htmlFor="location" className="form-label">
+                        Location
+                    </label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="location"
+                        name="location"
+                        value={creds.location}
+                        onChange={changeHandler}
+                    />
+                </div>
                 <button type="submit" className="btn btn-primary">
                     Submit
                 </button>
-                <Link to="/createuser" className="m-3 btn btn-danger">
-                    I'm a new user
+                <Link to="/login" className="m-3 btn btn-danger">
+                    Already a User
                 </Link>
             </form>
         </div>

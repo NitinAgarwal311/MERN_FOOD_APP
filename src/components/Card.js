@@ -1,29 +1,34 @@
 import React from "react";
 
-export default function Card() {
+export default function Card(props) {
+    const priceOptions = Object.keys(props.options);
+
     return (
         <div className="m-3">
-            <div
-                class="card rounded"
-                style={{ width: "18rem", maxHeight: "360px" }}
-            >
+            <div className="card rounded" style={{ width: "18rem", maxHeight: "360px"}}>
                 <img
-                    src="https://static.toiimg.com/thumb/53110049.cms?width=1200&height=900"
-                    class="card-img-top"
-                    alt="..."
+                    src={props.imgSrc}
+                    className="card-img-top"
+                    alt={props.name}
+                    style={{height: '120px', objectFit: 'fill'}}
                 />
-                <div class="card-body">
-                    <h5 class="card-title">Title</h5>
-                    <p class="card-text">This is the text.</p>
+                <div className="card-body">
+                    <h5 className="card-title">{props.name}</h5>
+                    <p className="card-text">{props.description}</p>
                     <div>
                         <select className="bg-primary rounded p-1">
                             {Array.from({ length: 6 }, (_, i) => {
-                                return <option value={i + 1}>{i + 1}</option>;
+                                return (
+                                    <option value={i + 1} key={i + 1}>
+                                        {i + 1}
+                                    </option>
+                                );
                             })}
                         </select>
                         <select className="bg-primary m-2 p-1 rounded">
-                            <option value="half">Half</option>
-                            <option value="full">Full</option>
+                            {priceOptions.map((data) => (
+                                <option key={data} value={data}>{data}</option>
+                            ))}
                         </select>
 
                         <div className="m-2 d-inline fs-5">Total Price</div>
