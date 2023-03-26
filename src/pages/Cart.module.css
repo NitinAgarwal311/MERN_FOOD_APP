@@ -1,0 +1,13 @@
+th {
+    text-align: center !important;
+    vertical-align: center;
+}
+
+th.header {
+    font-size: large;
+}
+
+td {
+    text-align: center;
+    vertical-align: center;
+}

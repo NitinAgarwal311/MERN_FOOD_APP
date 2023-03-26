@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Signup() {
+    const navigate = useNavigate();
+
     const [creds, setCreds] = useState({
         name: "",
         email: "",
@@ -25,7 +27,11 @@ export default function Signup() {
 
         const data = await response.json();
 
-        console.log(data);
+        if(response.ok) {
+            navigate('/login');
+        } else {
+            alert(data.error);
+        }
     };
 
     const changeHandler = (event) => {
@@ -35,7 +41,7 @@ export default function Signup() {
     };
 
     return (
-        <div className="container">
+        <div className="container m-5">
             <form onSubmit={submitHandler}>
                 <div className="mb-3">
                     <label htmlFor="name" className="form-label">

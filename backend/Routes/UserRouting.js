@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
 const { body, validationResult } = require("express-validator");
-const bcryptjs = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
-const jwtSecret = 'secret';
+const jwtSecret = "secret";
 
 router.post(
     "/createuser",
@@ -31,8 +31,18 @@ router.post(
             });
             res.json({ success: true });
         } catch (error) {
-            console.log(error);
-            res.json({ success: false });
+            console.log(error.keyValue);
+            if (error.name === "MongoServerError" && error.code === 11000) {
+                let uniqueFields = "";
+                Object.keys(error.keyValue).forEach((key) => {
+                    uniqueFields = uniqueFields.concat(key).concat(',');
+                });
+                uniqueFields = uniqueFields.slice(0,uniqueFields.length-1);
+                return res
+                    .status(400)
+                    .json({ error: `${uniqueFields} should be unique` });
+            }
+            return res.status(400).json({ error: "Something went wrong" });
         }
     }
 );
@@ -52,26 +62,28 @@ router.post(
             const userData = await User.findOne({ email: req.body.email });
             if (userData === null) {
                 return res.status(400).json({ errors: "User not found" });
-            } 
-            const cmpPwd = await bcryptjs.compare(req.body.password,userData.password);
+            }
+            const cmpPwd = await bcryptjs.compare(
+                req.body.password,
+                userData.password
+            );
 
             if (!cmpPwd) {
                 return res.status(400).json({ errors: "Invalid Credentials" });
             }
 
             const data = {
-                user : {
-                    id: userData.id
-                }
-            }
+                user: {
+                    id: userData.id,
+                },
+            };
 
             const authToken = jwt.sign(data, jwtSecret);
 
-            res.status(200).json({ success: true, authToken: authToken});
-            
+            res.status(200).json({ success: true, authToken: authToken });
         } catch (error) {
             console.log(error);
-            res.status(400).json({ errors: error});
+            res.status(400).json({ errors: error });
         }
     }
 );
