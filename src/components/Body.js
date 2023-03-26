@@ -24,9 +24,9 @@ export default function Body(props) {
                                         item.CategoryName ===
                                             foodCategory.CategoryName &&
                                         (search === "" ||
-                                        item.name
-                                            .toLowerCase()
-                                            .includes(search.toLowerCase()))
+                                            item.name
+                                                .toLowerCase()
+                                                .includes(search.toLowerCase()))
                                 )
                                 .map((foodItem) => (
                                     <div
@@ -34,10 +34,8 @@ export default function Body(props) {
                                         className="col-sm col-md-6 col-lg-3"
                                     >
                                         <Card
-                                            name={foodItem.name}
-                                            imgSrc={foodItem.img}
+                                            foodItem={foodItem}
                                             options={foodItem.options[0]}
-                                            description={foodItem.description}
                                         />
                                     </div>
                                 ))}

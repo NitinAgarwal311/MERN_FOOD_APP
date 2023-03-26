@@ -19,6 +19,7 @@ app.use((req,res,next) => {
 
 app.use('/api',require('./Routes/UserRouting'));
 app.use('/api',require('./Routes/FoodRouting'));
+app.use('/api',require('./Routes/OrderRouting'));
 
 app.get('/', (req, res) => {
   res.send('Hello World!')

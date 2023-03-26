@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Cart from "../pages/Cart";
+import CartContext from "../store/cart-context";
 
-
-export default function Navbar() {
+export default function Navbar(props) {
     const navigate = useNavigate();
+    const [showCart, setShowCart] = useState(false);
+    const cartCtx = useContext(CartContext);
 
     const logoutHandler = () => {
-        localStorage.removeItem("authToken");
-        navigate("/login");
-    }
+        cartCtx.clearCart();    
+        localStorage.clear();
+        navigate("/");
+    };
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
+        <nav className="navbar navbar-expand-lg navbar-dark bg-primary" style={{width:"100vw"}}>
             <div className="container-fluid">
                 <Link className="navbar-brand fs-1 fst-italic" to="/">
                     GoFood
@@ -44,7 +48,7 @@ export default function Navbar() {
                                 <Link
                                     className="nav-link active fs-5"
                                     aria-current="page"
-                                    to="/myorders"
+                                    to="/orders"
                                 >
                                     My Orders
                                 </Link>
@@ -69,11 +73,21 @@ export default function Navbar() {
                     )}
                     {localStorage.getItem("authToken") && (
                         <div className="d-flex">
-                            <div className="btn bg-white text-primary mx-1 mt-1">
+                            <div
+                                className="btn bg-white text-primary mx-1 mt-1"
+                                onClick={() => {
+                                    setShowCart(true);
+                                }}
+                            >
                                 My Cart
                             </div>
-
-                            <div className="btn bg-white text-danger mx-1 mt-1" onClick={logoutHandler}>
+                            {showCart && (
+                                <Cart onCloseModal={() => setShowCart(false)} />
+                            )}
+                            <div
+                                className="btn bg-white text-danger mx-1 mt-1"
+                                onClick={logoutHandler}
+                            >
                                 Logout
                             </div>
                         </div>

@@ -23,12 +23,12 @@ export default function Login() {
 
         const data = await response.json();
 
-        if(response.ok) {
-          localStorage.setItem("authToken",data.authToken);
-          navigate('/');
-        }
-        else  {
-          alert(data.errors);
+        if (response.ok) {
+            localStorage.setItem("email", creds.email);
+            localStorage.setItem("authToken", data.authToken);
+            navigate("/");
+        } else {
+            alert(data.errors);
         }
     };
 
@@ -39,7 +39,7 @@ export default function Login() {
     };
 
     return (
-        <div className="container">
+        <div className="container m-5">
             <form onSubmit={submitHandler}>
                 <div className="mb-3">
                     <label htmlFor="exampleInputEmail1" className="form-label">
